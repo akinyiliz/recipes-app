@@ -1,8 +1,8 @@
 # 🍲 Recipe Hub
 
-Recipe Hub is a delightful web application built with 🚀 React, Vite, Tailwind CSS, TypeScript, and leverages the [Spoonacular API](https://spoonacular.com/) for fetching recipe data.
+Recipe Hub is a delightful web application that leverages the [Spoonacular API](https://spoonacular.com/) for fetching recipe data.
 
-It features various functionalities, including viewing popular recipes, vegetarian picks, dessert recipes, searching for desired recipes, selecting cuisines, and viewing detailed information about a specific recipe.
+Explore a variety of mouth-watering dishes and find your next culinary adventure.
 
 ## 🌟 Features
 
