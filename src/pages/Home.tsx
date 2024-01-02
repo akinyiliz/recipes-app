@@ -11,11 +11,12 @@ function Home() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8 }}
-      className="max-w-7xl mx-auto"
     >
-      <Popular />
-      <Vegetarian />
-      <Dessert />
+      <div className="max-w-7xl mx-auto">
+        <Popular />
+        <Vegetarian />
+        <Dessert />
+      </div>
     </motion.div>
   );
 }
