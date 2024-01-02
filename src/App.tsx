@@ -8,7 +8,7 @@ import Footer from "./components/Footer";
 function App() {
   return (
     <BrowserRouter>
-      <div className="bg-white w-full h-full">
+      <div className="bg-white w-full min-h-screen flex flex-col">
         <Navbar />
         <Hero />
         <Pages />
