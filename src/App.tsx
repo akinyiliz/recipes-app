@@ -1,5 +1,8 @@
 import { BrowserRouter } from "react-router-dom";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Pages from "./pages/Pages";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
@@ -14,6 +17,8 @@ function App() {
         <Pages />
         <Footer />
       </div>
+
+      <ToastContainer />
     </BrowserRouter>
   );
 }
