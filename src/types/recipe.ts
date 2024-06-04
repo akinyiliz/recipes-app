@@ -4,6 +4,6 @@ export type Recipe = {
   id: string;
   title: string;
   image: string;
-  instructions?: React.ReactNode;
+  instructions?: string;
   extendedIngredients?: Ingredient[];
 };
