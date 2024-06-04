@@ -1,65 +1,57 @@
-import { useEffect, useState } from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
+import { toast } from "react-toastify";
+import { useCallback, useEffect, useState } from "react";
 
-import RecipeCard from "./RecipeCard";
+import Spinner from "./Spinner";
+import Carousel from "./Carousel";
 import { Recipe } from "../types/recipe";
 
 function Popular() {
   const [popularRecipes, setPopularRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const getPopularRecipes = async () => {
-    const res = await fetch(
-      `https://api.spoonacular.com/recipes/random?apiKey=${
-        import.meta.env.VITE_API_KEY
-      }&number=6`
-    );
-    const data = await res.json();
-    setPopularRecipes(data.recipes);
-  };
+  const getPopularRecipes = useCallback(async () => {
+    setLoading(true);
+
+    try {
+      const storedRecipes = localStorage.getItem("popular");
+
+      if (storedRecipes) {
+        setPopularRecipes(JSON.parse(storedRecipes));
+      } else {
+        const res = await fetch(
+          `https://api.spoonacular.com/recipes/random?apiKey=${
+            import.meta.env.VITE_API_KEY
+          }&number=6`
+        );
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch recipes: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        setPopularRecipes(data.recipes);
+        localStorage.setItem("popular", JSON.stringify(data.recipes));
+      }
+    } catch (error) {
+      toast.info("Failed to fetch recipes, try again later!", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     getPopularRecipes();
-  }, []);
+  }, [getPopularRecipes]);
 
   return (
     <div className="my-6 mx-2">
       <h2 className="text-3xl font-semibold">Popular Recipes</h2>
       <small className="text-xs text-gray-500">Swipe to see more</small>
 
-      <Splide
-        options={{
-          label: "Popular Recipes",
-          perPage: 3,
-          drag: "free",
-          gap: "2rem",
-          pagination: false,
-          arrows: false,
-          breakpoints: {
-            600: {
-              perPage: 1,
-            },
-            1024: {
-              perPage: 2,
-            },
-          },
-        }}
-        className="w-full h-full md:h-72"
-      >
-        {popularRecipes.map((recipe) => {
-          return (
-            <SplideSlide key={recipe.id}>
-              <RecipeCard
-                id={recipe.id}
-                title={recipe.title}
-                image={recipe.image}
-              />
-            </SplideSlide>
-          );
-        })}
-      </Splide>
+      {loading ? <Spinner /> : <Carousel recipes={popularRecipes} />}
     </div>
   );
 }
