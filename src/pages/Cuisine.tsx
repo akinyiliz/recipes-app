@@ -1,31 +1,53 @@
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { motion } from "framer-motion";
-
 import { Recipe } from "../types/recipe";
+import Spinner from "../components/Spinner";
 import RecipeCard from "../components/RecipeCard";
+import { RouteParams } from "../types/routeParams";
 
 function Cuisine() {
-  const params = useParams();
+  const params = useParams<RouteParams>();
 
   const [cuisines, setCuisines] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchCuisines = async (cuisine: string) => {
-    const res = await fetch(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${
-        import.meta.env.VITE_API_KEY
-      }&cuisine=${cuisine}`
-    );
+    try {
+      setLoading(true);
 
-    const data = await res.json();
+      const res = await fetch(
+        `https://api.spoonacular.com/recipes/complexSearch?apiKey=${
+          import.meta.env.VITE_API_KEY
+        }&cuisine=${cuisine}`
+      );
 
-    setCuisines(data.results);
+      if (!res.ok) {
+        throw new Error(`Failed to fetch cuisines, ${res.statusText}`);
+      }
+
+      const data = await res.json();
+
+      setCuisines(data.results);
+    } catch (error) {
+      toast.info("Failed to fetch recipes, try again later!", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchCuisines(params.name ?? "");
   }, [params.name]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <motion.div
