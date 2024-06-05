@@ -17,26 +17,24 @@ function RecipePage() {
 
   useEffect(() => {
     const getRecipeInfo = async () => {
-      try {
-        setLoading(true);
+      setLoading(true);
 
+      try {
         const res = await fetch(
           `https://api.spoonacular.com/recipes/${
             params.id
           }/information?apiKey=${import.meta.env.VITE_API_KEY}`
         );
 
-        if (!res.ok) {
-          throw new Error(`Failed to fetch recipe, ${res.statusText}`);
-        }
-
         const data = await res.json();
 
         setRecipe(data);
       } catch (error) {
-        toast.info("Failed to fetch recipe, try again later!", {
-          position: "top-center",
-          autoClose: 5000,
+        toast.error("Failed to fetch recipe, try again later!", {
+          position: "top-right",
+          autoClose: 3000,
+          closeOnClick: true,
+          hideProgressBar: true,
         });
       } finally {
         setLoading(false);

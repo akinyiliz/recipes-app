@@ -13,25 +13,28 @@ function Searched() {
   const [loading, setLoading] = useState(true);
 
   const fetchSearchedRecipe = async (query: string) => {
-    try {
-      setLoading(true);
+    if (!query) {
+      setLoading(false);
+      return;
+    }
 
+    setLoading(true);
+
+    try {
       const res = await fetch(
         `https://api.spoonacular.com/recipes/complexSearch?apiKey=${
           import.meta.env.VITE_API_KEY
         }&query=${query}`
       );
 
-      if (!res.ok) {
-        throw new Error(`Failed to fetch recipes: ${res.statusText}`);
-      }
-
       const data = await res.json();
       setSearchedRecipes(data.results);
     } catch (error) {
-      toast.info("Failed to fetch recipe, try again later!", {
-        position: "top-center",
-        autoClose: 5000,
+      toast.error("Failed to fetch recipe, try again later!", {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        hideProgressBar: true,
       });
     } finally {
       setLoading(false);

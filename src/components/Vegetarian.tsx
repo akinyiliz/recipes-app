@@ -24,18 +24,16 @@ function Vegetarian() {
           }&number=6&tags=vegan`
         );
 
-        if (!res.ok) {
-          throw new Error(`Failed to fetch recipes: ${res.status}`);
-        }
-
         const data = await res.json();
         setVeggieRecipes(data.recipes);
         localStorage.setItem("vegetarian", JSON.stringify(data.recipes));
       }
     } catch (error) {
-      toast.info("Failed to fetch recipes, try again later!", {
-        position: "top-center",
-        autoClose: 5000,
+      toast.error("Failed to fetch recipes, try again later!", {
+        position: "top-right",
+        autoClose: 3000,
+        closeOnClick: true,
+        hideProgressBar: true,
       });
     } finally {
       setLoading(false);

@@ -24,18 +24,16 @@ function Dessert() {
           }&number=6&tags=dessert`
         );
 
-        if (!res.ok) {
-          throw new Error(`Failed to fetch recipes: ${res.status}`);
-        }
-
         const data = await res.json();
         setDesserts(data.recipes);
         localStorage.setItem("desserts", JSON.stringify(data.recipes));
       }
     } catch (error) {
-      toast.info("Failed to fetch recipes, try again later!", {
+      toast.error("Failed to fetch recipes, try again later!", {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 3000,
+        closeOnClick: true,
+        hideProgressBar: true,
       });
     } finally {
       setLoading(false);
