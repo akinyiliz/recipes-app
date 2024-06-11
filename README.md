@@ -4,6 +4,10 @@ Recipe Hub is a delightful web application that leverages the [Spoonacular API](
 
 Explore a variety of mouth-watering dishes and find your next culinary adventure.
 
+## Preview
+
+![Preview Screenshot](./src/assets/recipehub-preview.png)
+
 ## 🌟 Features
 
 - View Popular Recipes 🌐
